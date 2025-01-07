@@ -14,7 +14,9 @@ const index: React.FC<IndexProps> = ({ users }) => {
 };
 
 export const getStaticProps = async () => {
-  const response = await fetch("https://dummyjson.com/users");
+  const response = await fetch("https://dummyjson.com/users", {
+    next: { revalidate: 3600 },
+  });
   const { users } = await response.json();
   // Pass user data to the page via props
   return { props: { users } };
