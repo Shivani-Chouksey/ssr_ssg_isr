@@ -14,11 +14,20 @@ const index: React.FC<IndexProps> = (props) => {
 };
 
 export const getServerSideProps = async () => {
-  const response = await fetch("https://dummyjson.com/users");
-  const { users } = await response.json();
+  try {
+    const response = await fetch("https://dummyjson.com/users");
+    if (!response.ok) {
+      throw new Error("Error While Fetching User ");
+    }
+    const { users } = await response.json();
 
-  // Pass user data to the page via props
-  return { props: { users } };
+    // Pass user data to the page via props
+    return { props: { users } };
+  } catch (error) {
+    console.log("Error While Fetching USer Server Side Rendering ", error);
+
+    return { props: { users: [] } };
+  }
 };
 
 export default index;
